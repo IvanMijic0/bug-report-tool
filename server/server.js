@@ -10,7 +10,6 @@ import bugController from "./controllers/bug.controller.js"
 const server = express();
 const env = dotenv.config();
 
-
 if (env.error) {
 	console.error("Error loading .env file:", env.error);
 	process.exit(1);
@@ -20,7 +19,7 @@ server
 	.use(bodyParser.urlencoded({ extended: false }))
 	.use(bodyParser.json())
 	.use(cors({
-		origin: 'http://localhost:3000'
+		origin: 'http://localhost:5173'
 	}))
 
 	.get('/health', (_req, res) => {
@@ -28,9 +27,9 @@ server
 	})
 
 	.use('/auth', authController)
-	.use('/bug', bugController)
+	.use('/bugs', bugController)
 
-	.listen(process.env.PORT, () => console.log(`Listening : ${process.env.PORT}`));
+	.listen(process.env.PORT, () => console.log(`Listening : ${ process.env.PORT }`));
 
 mongoose.connect(process.env.MONGODB_URI)
 	.then(() => console.log("MongoDB is ready to serve."))

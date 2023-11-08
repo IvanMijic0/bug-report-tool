@@ -1,14 +1,9 @@
 import { ROLES } from '../utils/enums.js';
 
-const roleGuard = (requiredRole) => (req, res, next) => {
-	const { user } = req;
+const roleGuard = (requiredRoles) => (req, res, next) => {
+	const { role } = req.user;
 
-	if (user.role === requiredRole) {
-		return next();
-	}
-
-	res.status(403).send('Not allowed');
+	return requiredRoles.includes(role) ? next() : res.status(403).send('Not allowed');
 };
 
-export const devGuard = roleGuard(ROLES.DEVELOPER);
-export const qaGuard = roleGuard(ROLES.QA);
+export const bugAccessGuard = roleGuard([ROLES.DEVELOPER, ROLES.QA]);
